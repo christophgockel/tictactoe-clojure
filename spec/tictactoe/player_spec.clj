@@ -7,6 +7,12 @@
     (should= "x" (mark (new-player "x"))))
 
   (it "provides its move from $stdin"
-    (should= "42"
+    (should= 42
       (with-in-str "42"
-        (next-move (new-player "x"))))))
+        (next-move (new-player "x")))))
+
+  (it "returns 0 for non-number input"
+    (with-in-str "somerandomtext"
+      (should= 0
+               (next-move (new-player "x"))))))
+
