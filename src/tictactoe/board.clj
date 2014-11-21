@@ -12,7 +12,7 @@
 (defn is-valid-move? [position board]
   (not (position-taken? position board)))
 
-(defn- width [board]
+(defn width [board]
   (let [length (count board)]
     (int (Math/sqrt length))))
 
