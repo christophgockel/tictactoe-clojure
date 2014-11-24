@@ -18,3 +18,6 @@
 (defn show-draw []
   (println "Game ended in a draw."))
 
+(defn show-invalid-move []
+  (println "Invalid move."))
+

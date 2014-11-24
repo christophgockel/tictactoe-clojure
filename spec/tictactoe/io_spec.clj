@@ -13,13 +13,18 @@
       (should= "Next move for x:\n"
                output)))
 
-  (it "show a message for a winner"
+  (it "shows a message for a winner"
     (let [output (with-out-str (show-winner \x))]
       (should= "Winner is: x\n"
                output)))
 
-  (it "show a message for a draw"
+  (it "shows a message for a draw"
     (let [output (with-out-str (show-draw))]
       (should= "Game ended in a draw.\n"
+               output)))
+
+  (it "shows a message for an invalid move"
+    (let [output (with-out-str (show-invalid-move))]
+      (should= "Invalid move.\n"
                output))))
 

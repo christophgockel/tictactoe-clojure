@@ -17,12 +17,21 @@
                (place-move "x" 1 (new-board 3)))))
 
   (context "is-valid-move?"
-    (let [board (place-move "x" 1 (new-board 3))]
-      (it "returns true on valid moves"
-        (should (is-valid-move? 2 board)))
+    (with board (place-move "x" 1 (new-board 3)))
 
-      (it "returns false on invalid moves"
-        (should-not (is-valid-move? 1 board)))))
+    (it "returns true on valid moves"
+      (should= true (is-valid-move? 2 @board)))
+
+    (it "returns false on invalid moves"
+      (should= false (is-valid-move? 1 @board)))
+
+    (it "returns false on non-number positions"
+      (let [the-board (place-move \x 1 (new-board 3))]
+        (should= false (is-valid-move? "wat" the-board))))
+
+    (it "returns false on out-of-bounds indexes"
+      (let [the-board (place-move \x 1 (new-board 3))]
+        (should= false (is-valid-move? 42 the-board)))))
 
   (context "winning combinations"
     (it "identifies winning rows"

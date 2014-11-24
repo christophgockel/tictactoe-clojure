@@ -6,11 +6,14 @@
 (defn place-move [mark position board]
   (assoc board (- position 1) mark))
 
-(defn- position-taken? [position board]
-  (string? (nth board (- position 1))))
+(defn- is-free? [position]
+  (= true (number? position)))
+
+(defn free-positions [board]
+  (filter is-free? board))
 
 (defn is-valid-move? [position board]
-  (not (position-taken? position board)))
+  (not (nil? (some #{position} (free-positions board)))))
 
 (defn width [board]
   (let [length (count board)]
@@ -49,12 +52,6 @@
   (first
     (apply #(-> %)
            (filter is-unique? (line-combinations board)))))
-
-(defn- is-free? [position]
-  (= true (number? position)))
-
-(defn free-positions [board]
-  (filter is-free? board))
 
 (defn draw? [board]
   (and (not (has-winner? board))

@@ -10,20 +10,23 @@
 
 (describe "Game"
   (with-stubs)
-  (with board    (new-board 3))
-  (with player_a (fake-player \x))
-  (with player_b (fake-player \o))
-  (with game (new-game @player_a @player_b @board))
   (with show-board-stub (stub :show-board))
   (with show-next-move-stub (stub :show-next-move))
   (with show-winner-stub (stub :show-winner))
   (with show-draw-stub (stub :show-draw))
+  (with show-invalid-move-stub (stub :show-invalid-move))
+
+  (with board    (new-board 3))
+  (with player_a (fake-player \x))
+  (with player_b (fake-player \o))
+  (with game (new-game @player_a @player_b @board))
 
   (around [it]
     (with-redefs [io/show-board @show-board-stub
                   io/show-request-for-move @show-next-move-stub
                   io/show-winner @show-winner-stub
-                  io/show-draw @show-draw-stub]
+                  io/show-draw @show-draw-stub
+                  io/show-invalid-move @show-invalid-move-stub]
       (with-in-str "1" (it))))
 
   (it "plays a round"
@@ -43,6 +46,11 @@
   (it "displays a message for the next move in a round"
     (let [other-game (play-round @game)]
       (should-have-invoked :show-next-move)))
+
+;  (it "displays the board and prompt in each round"
+;    (let [other-game (play-round @game)]
+;        (should-have-invoked :show-board)
+;        (should-have-invoked :show-request-for-move)))
 
   (it "is over when there is a winner"
     (let [winning-board [\x \x \x 4 5 6 7 8 9]
@@ -72,5 +80,18 @@
     (let [board [1 \x \x 4 5 6 7 8 9]
           game (new-game @player_a @player_b board)
           next-game (play game)]
-      (should-have-invoked :show-winner))))
+      (should-have-invoked :show-winner)))
+
+  (it "does not proceed with the next round on invalid moves"
+    (let [board [\x \x \o 4 5 6 7 8 9]
+          game (new-game @player_a @player_b board)
+          next-game (play-round game)]
+      (should= @player_a
+               (first (:players next-game)))))
+
+  (it "displays an invalid move message"
+    (let [board [\x \x \o 4 5 6 7 8 9]
+          game (new-game @player_a @player_b board)
+          next-game (play-round game)]
+      (should-have-invoked :show-invalid-move))))
 
