@@ -1,6 +1,20 @@
-(ns tictactoe.core)
+(ns tictactoe.core
+  (:gen-class)
+  (:require [tictactoe.game :refer :all]
+            [tictactoe.player :refer :all]
+            [tictactoe.board :refer :all]
+            [tictactoe.io :refer :all]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn- play [game]
+  (let [board (:board game)]
+    (when-not (has-winner? board)
+      (recur (play-round game)))))
+
+(defn -main []
+  (let [player_a (new-player \X)
+        player_b (new-player \O)
+        board    (new-board 3)
+        game     (new-game player_a player_b board)]
+    (play game)
+    )
+  )
