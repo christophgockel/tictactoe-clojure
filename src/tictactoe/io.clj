@@ -12,3 +12,9 @@
 (defn show-request-for-move [next-mark]
   (println (str "Next move for " next-mark ":")))
 
+(defn show-winner [mark]
+  (println (str "Winner is: " mark)))
+
+(defn show-draw []
+  (println "Game ended in a draw."))
+

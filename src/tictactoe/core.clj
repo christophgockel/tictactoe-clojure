@@ -5,10 +5,6 @@
             [tictactoe.board :refer :all]
             [tictactoe.io :refer :all]))
 
-(defn- play [game]
-  (when-not (over? game)
-    (recur (play-round game))))
-
 (defn -main []
   (let [player_a (new-player \X)
         player_b (new-player \O)

@@ -11,20 +11,24 @@
 (describe "Game"
   (with-stubs)
   (with board    (new-board 3))
-  (with player_a (fake-player "x"))
-  (with player_b (fake-player "o"))
+  (with player_a (fake-player \x))
+  (with player_b (fake-player \o))
   (with game (new-game @player_a @player_b @board))
   (with show-board-stub (stub :show-board))
   (with show-next-move-stub (stub :show-next-move))
+  (with show-winner-stub (stub :show-winner))
+  (with show-draw-stub (stub :show-draw))
 
   (around [it]
     (with-redefs [io/show-board @show-board-stub
-                  io/show-request-for-move @show-next-move-stub]
+                  io/show-request-for-move @show-next-move-stub
+                  io/show-winner @show-winner-stub
+                  io/show-draw @show-draw-stub]
       (with-in-str "1" (it))))
 
   (it "plays a round"
     (let [another-game (play-round @game)]
-      (should= ["x" 2 3 4 5 6 7 8 9]
+      (should= [\x 2 3 4 5 6 7 8 9]
                (:board another-game))))
 
   (it "switches players after playing a round"
@@ -50,5 +54,23 @@
     (let [draw-board [\x \o \x \o \o \x \o \x \o]
           game (new-game @player_a @player_b draw-board)]
       (should= true
-               (over? game)))))
+               (over? game))))
+
+  (it "displays a winner message"
+    (let [winning-board [\x \x \x 4 5 6 7 8 9]
+          game (new-game @player_a @player_b winning-board)
+          other-game (play game)]
+        (should-have-invoked :show-winner)))
+
+  (it "displays a draw message"
+    (let [draw-board [\x \o \x \o \o \x \o \x \o]
+          game (new-game @player_a @player_b draw-board)
+          other-game (play game)]
+        (should-have-invoked :show-draw)))
+
+  (it "plays rounds until it's over"
+    (let [board [1 \x \x 4 5 6 7 8 9]
+          game (new-game @player_a @player_b board)
+          next-game (play game)]
+      (should-have-invoked :show-winner))))
 
