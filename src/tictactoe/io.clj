@@ -9,3 +9,6 @@
   (doseq [row (partition (tttboard/width board) board)]
     (println (format-line row))))
 
+(defn show-request-for-move [next-mark]
+  (println (str "Next move for " next-mark ":")))
+

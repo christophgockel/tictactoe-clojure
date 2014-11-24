@@ -7,15 +7,17 @@
   {:players [player_a player_b]
    :board   board})
 
+(defn- move-of [player]
+  (io/show-request-for-move (:mark player))
+  (player/next-move player))
+
 (defn play-round [game]
-  (let [current-player (first (:players game))
-        the-move (player/next-move current-player)
-        new-board (board/place-move
-                    (:mark current-player)
-                    the-move
-                    (:board game))]
+  (let [current-player (first (:players game))]
     (do
-      (io/show-board new-board)
+      (io/show-board (:board game))
       {:players (reverse (:players game))
-       :board new-board})))
+       :board (board/place-move
+                (:mark current-player)
+                (move-of current-player)
+                (:board game)) })))
 

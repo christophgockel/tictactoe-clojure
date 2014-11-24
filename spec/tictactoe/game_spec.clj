@@ -3,7 +3,7 @@
             [tictactoe.game :refer :all]
             [tictactoe.player :refer :all]
             [tictactoe.board :refer :all]
-            [tictactoe.io :refer :all]))
+            [tictactoe.io :refer :all :as io]))
 
 (defn fake-player [mark]
   {:mark mark})
@@ -15,9 +15,11 @@
   (with player_b (fake-player "o"))
   (with game (new-game @player_a @player_b @board))
   (with show-board-stub (stub :show-board))
+  (with show-next-move-stub (stub :show-next-move))
 
   (around [it]
-    (with-redefs [tictactoe.io/show-board @show-board-stub]
+    (with-redefs [io/show-board @show-board-stub
+                  io/show-request-for-move @show-next-move-stub]
       (with-in-str "1" (it))))
 
   (it "plays a round"
@@ -32,5 +34,9 @@
 
   (it "displays the board before each round"
     (let [other-game (play-round @game)]
-        (should-have-invoked :show-board))))
+        (should-have-invoked :show-board)))
+
+  (it "displays a message for the next move in a round"
+    (let [other-game (play-round @game)]
+      (should-have-invoked :show-next-move))))
 
