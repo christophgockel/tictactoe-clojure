@@ -27,7 +27,7 @@
 
 (defn- diagonals [board]
   (partition
-    (width board )
+    (width board)
     (concat
       (map-indexed
         (fn [index item] (get (vec item) index))
@@ -49,4 +49,14 @@
   (first
     (apply #(-> %)
            (filter is-unique? (line-combinations board)))))
+
+(defn- is-free? [position]
+  (= true (number? position)))
+
+(defn free-positions [board]
+  (filter is-free? board))
+
+(defn draw? [board]
+  (and (not (has-winner? board))
+       (empty? (free-positions board))))
 

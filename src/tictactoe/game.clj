@@ -21,3 +21,8 @@
                 (move-of current-player)
                 (:board game)) })))
 
+(defn over? [game]
+  (let [board (:board game)]
+    (or (board/has-winner? board)
+        (board/draw? board))))
+

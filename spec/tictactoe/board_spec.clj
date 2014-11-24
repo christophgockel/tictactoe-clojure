@@ -1,4 +1,4 @@
-(ns tictactoe.board-spec
+(ns tictactoe.board_spec
   (:require [speclj.core :refer :all]
             [tictactoe.board :refer :all]))
 
@@ -41,5 +41,25 @@
 
     (it "identifies the winner"
       (should= "x" (winner ["x" "x" "x" 4 5 6 7 8 9]))
-      (should= "o" (winner [1 2 "o" 4 "o" 6 "o" 8 9])))))
+      (should= "o" (winner [1 2 "o" 4 "o" 6 "o" 8 9]))))
+
+  (context "free-positions"
+    (it "contains all positions on an empty board"
+      (should= [1 2 3 4 5 6 7 8 9]
+               (free-positions (new-board 3))))
+
+    (it "returns free positions on an ongoing board"
+      (should= [1 9]
+               (free-positions [1 \x \x \o \o \x \x \x 9])))
+
+    (it "returns empty list on a finished board"
+      (should= []
+               (free-positions [\o \x \x \o \o \x \x \x \o]))))
+
+  (context "draw?"
+    (it "returns true on draws"
+      (should= true (draw? [\x \o \x \o \o \x \o \x \o])))
+
+    (it "returns false when there is no draw"
+      (should= false (draw? [\x \x \x \o \o \x \o \x \o])))))
 
