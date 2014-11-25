@@ -5,29 +5,26 @@
             [tictactoe.board :refer :all]
             [tictactoe.io :refer :all :as io]))
 
-(defn fake-player [mark]
-  {:mark mark})
-
 (describe "Game"
   (with-stubs)
   (with show-board-stub (stub :show-board))
-  (with show-next-move-stub (stub :show-next-move))
   (with show-winner-stub (stub :show-winner))
   (with show-draw-stub (stub :show-draw))
   (with show-invalid-move-stub (stub :show-invalid-move))
+  (with get-next-move-stub (stub :get-next-move {:return 1}))
 
   (with board    (new-board 3))
-  (with player_a (fake-player \x))
-  (with player_b (fake-player \o))
+  (with player_a (new-player \x @get-next-move-stub))
+  (with player_b (new-player \o @get-next-move-stub))
   (with game (new-game @player_a @player_b @board))
 
   (around [it]
     (with-redefs [io/show-board @show-board-stub
-                  io/show-request-for-move @show-next-move-stub
+                  io/get-next-move @get-next-move-stub
                   io/show-winner @show-winner-stub
                   io/show-draw @show-draw-stub
                   io/show-invalid-move @show-invalid-move-stub]
-      (with-in-str "1" (it))))
+      (it)))
 
   (it "plays a round"
     (let [another-game (play-round @game)]
@@ -43,9 +40,9 @@
     (let [other-game (play-round @game)]
         (should-have-invoked :show-board)))
 
-  (it "displays a message for the next move in a round"
+  (it "asks for the next move per round"
     (let [other-game (play-round @game)]
-      (should-have-invoked :show-next-move)))
+      (should-have-invoked :get-next-move {:with [\x @board]})))
 
 ;  (it "displays the board and prompt in each round"
 ;    (let [other-game (play-round @game)]

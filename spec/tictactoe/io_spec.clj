@@ -26,5 +26,23 @@
   (it "shows a message for an invalid move"
     (let [output (with-out-str (show-invalid-move))]
       (should= "Invalid move.\n"
-               output))))
+               output)))
+
+  (it "shows a request message when asking for a move"
+    (with-in-str "1"
+      (let [output (with-out-str (get-next-move \x []))]
+        (should= "Next move for x:\n"
+                 output))))
+
+  (it "provides its move from $stdin"
+    (with-out-str
+      (should= 42
+               (with-in-str "42"
+                 (get-next-move \x [])))))
+
+  (it "returns 0 for non-number input"
+    (with-out-str
+      (with-in-str "somerandomtext"
+        (should= 0
+                 (get-next-move \x nil))))))
 

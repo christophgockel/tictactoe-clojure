@@ -21,3 +21,12 @@
 (defn show-invalid-move []
   (println "Invalid move."))
 
+(letfn [(parse-int [value]
+          (let [number-match (re-find #"\d+" value)]
+            (if number-match
+              (Integer/parseInt number-match)
+              0)))]
+  (defn get-next-move [mark board]
+    (println (str "Next move for " mark ":"))
+    (parse-int (read-line))))
+

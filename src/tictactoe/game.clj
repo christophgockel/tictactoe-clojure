@@ -3,10 +3,6 @@
             [tictactoe.board :as board]
             [tictactoe.io :as io]))
 
-(defn- move-of [player]
-  (io/show-request-for-move (:mark player))
-  (player/next-move player))
-
 (defn- display-game-result [game]
   (let [board (:board game)
         last-player (last (:players game))]
@@ -16,7 +12,7 @@
 
 (defn- board-with-move [board current-player]
   (let [mark (:mark current-player)
-        move (move-of current-player)]
+        move (player/next-move current-player board)]
     (if (board/is-valid-move? move board)
       (board/place-move mark move board)
       board)))

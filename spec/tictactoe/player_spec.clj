@@ -3,16 +3,15 @@
             [tictactoe.player :refer :all]))
 
 (describe "Player"
+  (with-stubs)
+
   (it "has a mark"
-    (should= "x" (mark (new-player "x"))))
+    (should= "x" (mark (new-player "x" nil))))
 
-  (it "provides its move from $stdin"
-    (should= 42
-      (with-in-str "42"
-        (next-move (new-player "x")))))
-
-  (it "returns 0 for non-number input"
-    (with-in-str "somerandomtext"
-      (should= 0
-               (next-move (new-player "x"))))))
+  (it "calls passed function for next-move"
+    (let [callback (stub :callback)
+          board [1 2 3 4 5 6 7 8 9]
+          player (new-player \x callback)]
+      (next-move player board)
+      (should-have-invoked :callback {:with [\x board]}))))
 

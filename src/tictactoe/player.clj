@@ -1,7 +1,8 @@
 (ns tictactoe.player)
 
-(defn new-player [mark]
-  {:mark mark})
+(defn new-player [mark next-move-callback]
+  {:mark mark
+   :next-move-callback next-move-callback})
 
 (defn mark [player]
   (:mark player))
@@ -12,6 +13,6 @@
       (Integer/parseInt number-match)
       0)))
 
-(defn next-move [player]
-  (parse-int (read-line)))
+(defn next-move [player board]
+  ((:next-move-callback player) (mark player) board))
 
