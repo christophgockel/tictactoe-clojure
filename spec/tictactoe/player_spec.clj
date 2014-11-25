@@ -6,7 +6,7 @@
   (with-stubs)
 
   (it "has a mark"
-    (should= "x" (mark (new-player "x" nil))))
+    (should= \x (mark (new-player \x nil))))
 
   (it "calls passed function for next-move"
     (let [callback (stub :callback)
