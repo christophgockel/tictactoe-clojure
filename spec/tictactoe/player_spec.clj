@@ -6,12 +6,16 @@
   (with-stubs)
 
   (it "has a mark"
-    (should= \x (mark (new-player \x nil))))
+    (should= X (mark (new-player X nil))))
 
   (it "calls passed function for next-move"
     (let [callback (stub :callback)
           board [1 2 3 4 5 6 7 8 9]
-          player (new-player \x callback)]
+          player (new-player X callback)]
       (next-move player board)
-      (should-have-invoked :callback {:with [\x board]}))))
+      (should-have-invoked :callback {:with [X board]})))
+
+  (it "knows the opponent mark"
+    (should= O (opponent-of X))
+    (should= X (opponent-of O))))
 

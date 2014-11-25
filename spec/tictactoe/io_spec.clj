@@ -1,5 +1,6 @@
 (ns tictactoe.io_spec
   (:require [speclj.core :refer :all]
+            [tictactoe.player :refer [X]]
             [tictactoe.io :refer :all]))
 
 (describe "I/O"
@@ -9,7 +10,7 @@
                output)))
 
   (it "shows a message for a winner"
-    (let [output (with-out-str (show-winner \x))]
+    (let [output (with-out-str (show-winner X))]
       (should= "Winner is: x\n"
                output)))
 
@@ -25,7 +26,7 @@
 
   (it "shows a request message when asking for a move"
     (with-in-str "1"
-      (let [output (with-out-str (get-next-move \x []))]
+      (let [output (with-out-str (get-next-move X []))]
         (should= "Next move for x:\n"
                  output))))
 
@@ -33,11 +34,11 @@
     (with-out-str
       (should= 42
                (with-in-str "42"
-                 (get-next-move \x [])))))
+                 (get-next-move X [])))))
 
   (it "returns 0 for non-number input"
     (with-out-str
       (with-in-str "somerandomtext"
         (should= 0
-                 (get-next-move \x nil))))))
+                 (get-next-move X nil))))))
 

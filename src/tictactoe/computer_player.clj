@@ -1,17 +1,12 @@
 (ns tictactoe.computer_player
-  (:require [tictactoe.board :as board :only [place-move winner]]))
-
-(defn mark [player]
-  (:mark player))
+  (:require [tictactoe.board :as board :only [place-move winner]]
+            [tictactoe.player :as player :only [X O opponent-of mark]]))
 
 (defn place-move [player board]
-  (board/place-move (mark player) 1 board))
+  (board/place-move (player/mark player) 1 board))
 
 (defn new-computer-player [mark]
   {:mark mark})
-
-(defn- opponent [mark]
-  (if (= mark \o) \x \o))
 
 (defn- is-rateable? [board]
   (or (board/has-winner? board)
@@ -30,7 +25,7 @@
 (defn- board-scores [board mark]
   (let [available-moves (board/free-positions board)
         new-boards (map #(board/place-move mark %1 board) available-moves)]
-    (map #(- (negamax %1 (opponent mark))) new-boards)))
+    (map #(- (negamax %1 (player/opponent-of mark))) new-boards)))
 
 (defn- negamax [board mark]
   (if (is-rateable? board)
