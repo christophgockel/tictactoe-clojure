@@ -66,9 +66,9 @@
 
   (it "displays a winner message"
     (let [winning-board [\x \x \x 4 5 6 7 8 9]
-          game (new-game @player_a @player_b winning-board)
+          game (new-game @player_b @player_a winning-board)
           other-game (play game)]
-        (should-have-invoked :show-winner)))
+        (should-have-invoked :show-winner {:with [\x]})))
 
   (it "displays a draw message"
     (let [draw-board [\x \o \x \o \o \x \o \x \o]

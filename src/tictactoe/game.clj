@@ -11,7 +11,7 @@
   (let [board (:board game)
         last-player (last (:players game))]
     (cond
-      (board/has-winner? board) (io/show-winner last-player)
+      (board/has-winner? board) (io/show-winner (player/mark last-player))
       (board/draw? board) (io/show-draw))))
 
 (defn- board-with-move [board current-player]
