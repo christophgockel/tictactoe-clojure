@@ -8,11 +8,6 @@
       (should= "1 | 2 | 3\n4 | 5 | 6\n7 | 8 | 9\n"
                output)))
 
-  (it "shows message for requesting a move"
-    (let [output (with-out-str (show-request-for-move \x))]
-      (should= "Next move for x:\n"
-               output)))
-
   (it "shows a message for a winner"
     (let [output (with-out-str (show-winner \x))]
       (should= "Winner is: x\n"
