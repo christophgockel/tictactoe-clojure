@@ -20,17 +20,19 @@
       (board/has-winner? board) (* score (if (= (board/winner board) mark) 1 -1)))
     ))
 
-(declare negamax)
+(declare negamax negamax-value)
 
 (defn- board-scores [board mark]
   (let [available-moves (board/free-positions board)
         new-boards (map #(board/place-move mark %1 board) available-moves)]
     (map #(- (negamax %1 (player/opponent-of mark))) new-boards)))
 
-(defn- negamax [board mark]
+(defn- negamax-value [board mark]
   (if (is-rateable? board)
     (rate board mark)
     (apply max (board-scores board mark))))
+
+(def negamax (memoize negamax-value))
 
 (defn best-move-for [mark board]
   (let [available-moves (board/free-positions board)
