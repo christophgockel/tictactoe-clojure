@@ -49,8 +49,9 @@
   (> (count (filter is-unique? (line-combinations board))) 0))
 
 (defn winner [board]
-  (first (first
-           (filter is-unique? (line-combinations board)))))
+  (first
+    (first
+      (filter is-unique? (line-combinations board)))))
 
 (defn draw? [board]
   (and (not (has-winner? board))

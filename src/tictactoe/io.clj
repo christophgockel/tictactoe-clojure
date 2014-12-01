@@ -23,5 +23,17 @@
               0)))]
   (defn get-next-move [mark board]
     (println (str "Next move for " mark ":"))
+    (parse-int (read-line)))
+
+  (defn get-game-mode []
     (parse-int (read-line))))
+
+(defn show-game-mode-prompt []
+  (println "Chose Game Mode:"))
+
+(defn show-game-mode-options [player-types]
+  (let [indices (map #(name %) (keys player-types))
+        values (vals player-types)]
+    (doseq [index indices]
+      (println (str index ". " (:description ((keyword index) player-types)))))))
 

@@ -1,4 +1,4 @@
-(ns tictactoe.player-spec
+(ns tictactoe.player_spec
   (:require [speclj.core :refer :all]
             [tictactoe.player :refer :all]))
 
