@@ -90,5 +90,12 @@
     (let [board [X X O 4 5 6 7 8 9]
           game (new-game @player_a @player_b board)
           next-game (play-round game)]
-      (should-have-invoked :show-invalid-move))))
+      (should-have-invoked :show-invalid-move)))
+
+  (it "shows the board again when over"
+    (let [winning-board [1 X X O X O X O X]
+          game (new-game @player_a @player_b winning-board)
+          game-after-round (play-round game)
+          game-after-another-round (play-round game-after-round)]
+        (should-have-invoked :show-board {:times 2}))))
 

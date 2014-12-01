@@ -5,7 +5,8 @@
 (defn show-board [board]
   (let [format-line (fn [line] (string/join " | " line))]
     (doseq [row (partition (tttboard/width board) board)]
-      (println (format-line row)))))
+      (println (format-line row)))
+    (println)))
 
 (defn show-winner [mark]
   (println (str "Winner is: " mark)))
