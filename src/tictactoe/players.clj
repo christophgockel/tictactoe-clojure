@@ -1,7 +1,6 @@
 (ns tictactoe.players
-  (:require [tictactoe.computer_player :as computer]
-            [tictactoe.player :refer [new-player X O]]
-            [tictactoe.computer_player :refer [best-move-for] :as ai]
+  (:require [tictactoe.player :refer [new-player X O]]
+            [tictactoe.negamax :refer [best-move-for] :as ai]
             [tictactoe.io :as io]))
 
 (defn available-player-types []

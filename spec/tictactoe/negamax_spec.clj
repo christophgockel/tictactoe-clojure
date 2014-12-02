@@ -1,25 +1,9 @@
-(ns tictactoe.computer_player_spec
+(ns tictactoe.negamax-spec
   (:require [speclj.core :refer :all]
-            [tictactoe.computer_player :refer :all]
+            [tictactoe.negamax :refer :all]
             [tictactoe.player :refer :all]))
 
-(describe "Computer Player"
-  (it "is a thing"
-    (should (new-computer-player O)))
-
-  (it "has a mark"
-    (should= X (mark (new-computer-player X))))
-
-  (it "picks a move"
-    (let [computer (new-computer-player O)]
-      (should= [O 2 3 4 5 6 7 8 9]
-               (place-move computer [1 2 3 4 5 6 7 8 9]))))
-
-  (it "blocks"
-    (let [computer (new-computer-player O)]
-      (should= [O X X 4 5 6 7 8 9]
-               (place-move computer [1 X X 4 5 6 7 8 9]))))
-
+(describe "Negamax"
   (it "blocks in rows"
     (should= 1 (best-move-for O [1 X X 4 5 6 7 8 9]))
     (should= 2 (best-move-for O [X 2 X 4 5 6 7 8 9]))
